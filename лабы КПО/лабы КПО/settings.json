@@ -1,0 +1,10 @@
+{
+    "current": {
+        "difficulty": "Лёгкий",
+        "duration": 25
+    },
+    "defaults": {
+        "difficulty": "Лёгкий",
+        "duration": 25
+    }
+}

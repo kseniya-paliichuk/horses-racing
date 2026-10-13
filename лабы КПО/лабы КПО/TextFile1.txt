@@ -1,0 +1,46 @@
+import os
+import json
+
+SETTINGS_FILE = "settings.json"
+DIFFICULTIES_FILE = "difficulties.txt"
+
+DEFAULT_DIFFICULTY = "Лёгкий"
+DEFAULT_DURATION = 60
+
+
+def init_files():
+    if not os.path.exists(SETTINGS_FILE):
+        with open(SETTINGS_FILE, "w", encoding="utf-8") as f:
+            json.dump({
+                "current": {"difficulty": DEFAULT_DIFFICULTY, "duration": DEFAULT_DURATION},
+                "defaults": {"difficulty": DEFAULT_DIFFICULTY, "duration": DEFAULT_DURATION}
+            }, f, ensure_ascii=False, indent=4)
+    if not os.path.exists(DIFFICULTIES_FILE):
+        with open(DIFFICULTIES_FILE, "w", encoding="utf-8") as f:
+            f.write("Легкий\nХард\n")
+
+
+def load_settings():
+    with open(SETTINGS_FILE, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    return data["current"]["difficulty"], data["current"]["duration"]
+
+
+def save_current(difficulty, duration):
+    with open(SETTINGS_FILE, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    data["current"]["difficulty"] = difficulty
+    data["current"]["duration"] = duration
+    with open(SETTINGS_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+
+
+def load_defaults():
+    with open(SETTINGS_FILE, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    return data["defaults"]["difficulty"], data["defaults"]["duration"]
+
+
+def load_difficulties():
+    with open(DIFFICULTIES_FILE, "r", encoding="utf-8") as f:
+        return set(line.strip() for line in f if line.strip())
